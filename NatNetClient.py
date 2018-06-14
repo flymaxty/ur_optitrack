@@ -3,7 +3,7 @@ import struct
 from threading import Thread
 
 def trace( *args ):
-    pass # print( "".join(map(str,args)) )
+    pass #print( "".join(map(str,args)) )
 
 # Create structs for reading various object types to speed up parsing.
 Vector3 = struct.Struct( '<fff' )
@@ -13,6 +13,9 @@ DoubleValue = struct.Struct( '<d' )
 
 class NatNetClient:
     def __init__( self ):
+        # thread stop flag
+        self.running = False
+
         # Change this value to the IP address of the NatNet server.
         self.serverIPAddress = "127.0.0.1"
 
@@ -350,8 +353,8 @@ class NatNetClient:
             elif( type == 2 ):
                 offset += self.__unpackSkeletonDescription( data[offset:] )
             
-    def __dataThreadFunction( self, socket ):
-        while True:
+    def __dataThreadFunction( self, socket, stop_flag):
+        while stop_flag:
             # Block for input
             data, addr = socket.recvfrom( 32768 ) # 32k byte buffer size
             if( len( data ) > 0 ):
@@ -394,6 +397,10 @@ class NatNetClient:
             trace( "ERROR: Unrecognized packet type" )
             
         trace( "End Packet\n----------\n" )
+
+        # stop thread
+    def stopAll( self ):
+        self.running = False
             
     def sendCommand( self, command, commandStr, socket, address ):
         # Compose the message in our known message format
@@ -427,12 +434,15 @@ class NatNetClient:
             print( "Could not open command channel" )
             exit
 
+        # enable thread running flag
+        self.running = True;
+
         # Create a separate thread for receiving data packets
-        dataThread = Thread( target = self.__dataThreadFunction, args = (self.dataSocket, ))
+        dataThread = Thread( target = self.__dataThreadFunction, args = (self.dataSocket, self.running))
         dataThread.start()
 
         # Create a separate thread for receiving command packets
-        commandThread = Thread( target = self.__dataThreadFunction, args = (self.commandSocket, ))
+        commandThread = Thread( target = self.__dataThreadFunction, args = (self.commandSocket, self.running))
         commandThread.start()
 
         self.sendCommand( self.NAT_REQUEST_MODELDEF, "", self.commandSocket, (self.serverIPAddress, self.commandPort) )
