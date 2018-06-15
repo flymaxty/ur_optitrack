@@ -17,7 +17,9 @@ from NatNetClient import NatNetClient
 global_to_arm_T = np.empty([4,4])
 
 tcp_to_target_T = math3d.Transform()
-tcp_to_target_T.pos.x += 0.0001
+tcp_to_target_T.pos.x += 0.06
+# tcp_to_target_T.pos.z -= 0.0005
+# tcp_to_target_T.pos.y += 0.000
 tcp_target_orient = np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]])
 tcp_to_target_T.set_orient(math3d.Orientation(tcp_target_orient))
 
@@ -42,7 +44,7 @@ def receiveRigidBodyFrame( id, position, rotation ):
 
         trace("arm_to_global_T", trans_matrix.matrix)
         trace("global_to_arm_T", global_to_arm_T.matrix)
-    elif(id == 2):
+    elif(id == 3):
         # frame counter, exec each 10 frame
         # if(counter < 2):
         #     counter += 1
