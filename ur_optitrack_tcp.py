@@ -59,6 +59,9 @@ def receiveRigidBodyFrame( id, position, rotation ):
 
             target_to_tcp_T = math3d.Transform()
             target_to_tcp_T.set_pos(temp_matrix[:3,3].A1)
+            # target_to_tcp_T.pos.x = target_to_tcp_T.pos.x * -1.0;
+            # target_to_tcp_T.pos.y = 0
+            # target_to_tcp_T.pos.z = 0
             orient = math3d.Orientation(temp_matrix[:3,:3].A1)
             target_to_tcp_T.set_orient(orient)
 
@@ -66,7 +69,7 @@ def receiveRigidBodyFrame( id, position, rotation ):
 
 if __name__ == '__main__':
     # arm = Robot("192.168.0.133")
-    arm = Robot("192.168.0.200")
+    arm = Robot("192.168.0.145")
 
     # init optitrack stream
     streamingClient = NatNetClient()
@@ -81,7 +84,7 @@ if __name__ == '__main__':
     try:
         while True:
             print("set tcp pose\n", target_to_tcp_T.matrix)
-            arm.movel_tool(target_to_tcp_T, acc=0.2, vel=0.2)
+            arm.movel_tool(target_to_tcp_T, acc=0.4, vel=0.4)
     except KeyboardInterrupt:
         streamingClient.stopAll()
         arm.stop()
