@@ -11,7 +11,6 @@ import json
 import signal
 import math3d
 import numpy as np
-from urx import Robot
 import paho.mqtt.client as mqtt
 from NatNetClient import NatNetClient
 
@@ -25,7 +24,7 @@ tcp_target_orient = np.array([[-1, 0, 0], [0, 1, 0], [0, 0, -1]])
 target_to_object_T.set_orient(math3d.Orientation(tcp_target_orient))
 
 def trace(*args):
-    pass # print("".join(map(str,args)))
+    pass  # print("".join(map(str,args)))
 
 def on_mqtt_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -63,7 +62,7 @@ def receiveRigidBodyFrame( id, position, rotation ):
 
         json_value = json.dumps({'type': 'pointer', 'matrix' :trans_matrix.array.flatten().tolist()})
         mqtt_client.publish('iqr/cs-ras/optitrack_data', json_value)
-    elif(id == 6):
+    elif(id == 4):
         trans_matrix = math3d.Transform()
         quaternion = math3d.UnitQuaternion(rotation[3], rotation[0], rotation[1], rotation[2])
         trans_matrix.set_pos(position)
