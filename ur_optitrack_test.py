@@ -14,6 +14,11 @@ import numpy as np
 from urx import Robot
 from NatNetClient import NatNetClient
 
+# ----------------------------------------------
+bool step_done = False
+# ----------------------------------------------
+
+
 recv4 = False
 global_to_tcp_T = math3d.Transform()
 target_to_tcp_T = math3d.Transform()
@@ -35,39 +40,20 @@ def receiveRigidBodyPackageFrame( frameNumber, rigidBodyList ):
     global target_to_object_T, global_to_tcp_T, target_to_tcp_T, recv4
     # trace( "Received frame for rigid body ", frameNumber)
 
-    for rigidBody in rigidBodyList:
-        if(rigidBody['name'] == 'cs_rasc_tcp'):
-            recv4 = True
-            trans_matrix = math3d.Transform()
-            quaternion = math3d.UnitQuaternion(rigidBody['rot'][3], rigidBody['rot'][0], rigidBody['rot'][1], rigidBody['rot'][2])
-            trans_matrix.set_pos(rigidBody['pos'])
-            trans_matrix.set_orient(quaternion.orientation)
-            global_to_tcp_T = trans_matrix.get_inverse()
+    if(step_done == True):
 
-            # trace("tcp_to_global_T", trans_matrix.matrix)
-            # trace("global_to_tcp_T", global_to_tcp_T.matrix)
-        elif(rigidBody['name'] == 'cal_design_facebow_small'):
-            if(recv4 == True):
+        for rigidBody in rigidBodyList:
+            if(rigidBody['name'] == 'cs_rasc_tcp'):
+                recv4 = True
                 trans_matrix = math3d.Transform()
                 quaternion = math3d.UnitQuaternion(rigidBody['rot'][3], rigidBody['rot'][0], rigidBody['rot'][1], rigidBody['rot'][2])
                 trans_matrix.set_pos(rigidBody['pos'])
                 trans_matrix.set_orient(quaternion.orientation)
-                object_to_global_T = trans_matrix
+                global_to_tcp_T = trans_matrix.get_inverse()
+                break
 
-                # trace("A", global_to_tcp_T)
-                # trace("B", global_to_object_T.matrix)
-                # trace("C", target_to_object_T.matrix)
-                temp_matrix = global_to_tcp_T.matrix * object_to_global_T.matrix * target_to_object_T.matrix
-
-                target_to_tcp_T = math3d.Transform()
-                target_to_tcp_T.set_pos(temp_matrix[:3,3].A1)
-                # target_to_tcp_T.pos.x = target_to_tcp_T.pos.x * -1.0;
-                # target_to_tcp_T.pos.y = 0
-                # target_to_tcp_T.pos.z = 0
-                orient = math3d.Orientation(temp_matrix[:3,:3].A1)
-                target_to_tcp_T.set_orient(orient)
-
-                # trace("object_to_global_T", object_to_global_T.matrix)
+                # trace("tcp_to_global_T", trans_matrix.matrix)
+                # trace("global_to_tcp_T", global_to_tcp_T.matrix)
 
 def signal_handler(signum, frame):
     print("signal hit")
