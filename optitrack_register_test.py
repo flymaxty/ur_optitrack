@@ -57,49 +57,61 @@ if __name__ == '__main__':
         if set_transform == False:
             transform_T = t1.inverse * t2
             set_transform = True
+            euclidean_error.append(0)
+            angle_error.append(0)
         else:
             t2_calculated = t1 * transform_T
             euclidean_error.append(t2_calculated.pos.dist(t2.pos)*1000.0)
             angle_error.append(t2_calculated.orient.ang_dist(t2.orient))
 
-        # print(set_transform)
-        # print(t1.inverse * t2)
-        # print(t1.dist(t2), t1.get_orient().ang_dist(t2.get_orient()))
     print('Done', end='\n')
+
+    print("Euclidean mean error: ", np.array(euclidean_error).mean())
+    print("Angle mean error:", np.array(angle_error).mean())
     
     print('Ploting figure...', end='')
     fig = plt.figure()
 
-    euclidean_error_boxplot = fig.add_subplot(2, 2, 1)
+    point_sub = fig.add_subplot(2, 3, 1, projection='3d')
+    d = point_sub.scatter(xx, yy, zz, c=euclidean_error, marker='.')
+    point_sub.set_title('Point Cloud(Euclidean error)')
+    point_sub.set_xlabel('X')
+    point_sub.set_ylabel('Y')
+    point_sub.set_zlabel('Z')
+    # point_sub.set_xlim([-600, 600])
+    # point_sub.set_ylim([-100, 100])
+    # point_sub.set_zlim([-600, 600])
+    plt.colorbar(d, ax = point_sub)
+
+    euclidean_error_boxplot = fig.add_subplot(2, 3, 2)
     euclidean_error_boxplot.set_title('Euclidean error(mm)')
     euclidean_error_boxplot.boxplot(euclidean_error)
 
-    euclidean_error_hist = fig.add_subplot(2, 2, 2)
+    euclidean_error_hist = fig.add_subplot(2, 3, 3)
     euclidean_error_hist.set_title('Euclidean error(mm)')
     euclidean_error_hist.hist(x=euclidean_error, bins=50)
 
-    euclidean_distance_boxplot = fig.add_subplot(2, 2, 3)
-    euclidean_distance_boxplot.set_title('Angle error(mm)')
+    point_sub2 = fig.add_subplot(2, 3, 4, projection='3d')
+    d = point_sub2.scatter(xx, yy, zz, c=angle_error, marker='.')
+    point_sub2.set_title('Point Cloud(Angle error)')
+    point_sub2.set_xlabel('X')
+    point_sub2.set_ylabel('Y')
+    point_sub2.set_zlabel('Z')
+    # point_sub.set_xlim([-600, 600])
+    # point_sub.set_ylim([-100, 100])
+    # point_sub.set_zlim([-600, 600])
+    plt.colorbar(d, ax = point_sub2)
+
+    euclidean_distance_boxplot = fig.add_subplot(2, 3, 5)
+    euclidean_distance_boxplot.set_title('Angle error(rad)')
     euclidean_distance_boxplot.boxplot(angle_error)
 
-    euclidean_distance_hist = fig.add_subplot(2, 2, 4)
-    euclidean_distance_hist.set_title('Angle error(mm)')
+    euclidean_distance_hist = fig.add_subplot(2, 3, 6)
+    euclidean_distance_hist.set_title('Angle error(rad)')
     euclidean_distance_hist.hist(x=angle_error, bins=50)
-
-    # point_sub = fig.add_subplot(1, 3, 1, projection='3d')
-    # d = point_sub.scatter(xx, yy, zz, c=euclidean_distance_error, marker='.')
-    # point_sub.set_title('Point Cloud')
-    # point_sub.set_xlabel('X')
-    # point_sub.set_ylabel('Y')
-    # point_sub.set_zlabel('Z')
-    # # point_sub.set_xlim([-600, 600])
-    # # point_sub.set_ylim([-100, 100])
-    # # point_sub.set_zlim([-600, 600])
-    # plt.colorbar(d, ax = point_sub)
 
     print('Done', end='\n')
     plt.show()
 
     print(np.array(euclidean_error).mean())
     print(np.array(angle_error).mean())
-    # print(read_object_data("object_data.json", "cal_design_big", "cal_design_small"))
