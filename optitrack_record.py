@@ -78,6 +78,13 @@ if __name__ == '__main__':
     streamingClient.newFrameListener = receiveNewFrame
     streamingClient.rigidBodyPackageListener = receiveRigidBodyPackageFrame 
 
+    try:
+        frame_count = int(sys.argv[1])
+    except ValueError:
+        print("unaccepted value")
+    except IndexError:
+        pass
+
     print('Start recording...')
     print('Frame Count: ', frame_count)
     streamingClient.run()
