@@ -24,7 +24,7 @@ from NatNetClient import NatNetClient
 
 frame_rate = 120
 record_seconds = 45
-frame_count = 2830 # frame_rate * record_seconds
+frame_count = 640 # frame_rate * record_seconds
 
 rigid_list = []
 

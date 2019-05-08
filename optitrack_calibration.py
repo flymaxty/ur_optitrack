@@ -72,11 +72,11 @@ if __name__ == '__main__':
         yy.append(row.iloc[0]['pos1']*1000.0)
         zz.append(row.iloc[0]['pos2']*1000.0)
 
-        euclidean_distance.append(t1.dist(t2)*1000.0-100.0)
+        euclidean_distance.append(t1.pos.dist(t2.pos)*1000.0-100.0)
         angle_distance.append(t1.get_orient().ang_dist(t2.get_orient()))
 
         if set_transform == False:
-            print("FFFF", t2.dist(t1), ', ', t1.get_orient().ang_dist(t2.get_orient()))
+            print("FFFF", t2.pos.dist(t1.pos), ', ', t1.get_orient().ang_dist(t2.get_orient()))
             transform_T = t1.inverse * t2
             # transform_T = math3d.Transform()
             # transform_T.pos.y = -0.1
@@ -84,7 +84,7 @@ if __name__ == '__main__':
             register_error.append(0)
         else:
             t1_calculated = t1 * transform_T
-            t1_error = t1_calculated.dist(t2)*1000.0
+            t1_error = t1_calculated.pos.dist(t2.pos)*1000.0
             # t2_error = t2_calculated.orient.ang_dist(t2.orient)
             register_error.append(t1_error)
             # print(t2_error)

@@ -19,7 +19,7 @@ global_to_tcp_T = math3d.Transform()
 target_to_tcp_T = math3d.Transform()
 target_to_object_T = math3d.Transform()
 
-target_to_object_T.pos.z = 0.06
+target_to_object_T.pos.z = 0.1
 tcp_target_orient = np.array([[-1, 0, 0], [0, 1, 0], [0, 0, -1]])
 target_to_object_T.set_orient(math3d.Orientation(tcp_target_orient))
 
