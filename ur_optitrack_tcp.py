@@ -19,9 +19,9 @@ global_to_tcp_T = math3d.Transform()
 target_to_tcp_T = math3d.Transform()
 target_to_object_T = math3d.Transform()
 
-target_to_object_T.pos.z = 0.1
-tcp_target_orient = np.array([[-1, 0, 0], [0, 1, 0], [0, 0, -1]])
-target_to_object_T.set_orient(math3d.Orientation(tcp_target_orient))
+target_to_object_T.pos.z = -0.06
+# tcp_target_orient = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+# target_to_object_T.set_orient(math3d.Orientation(tcp_target_orient))
 
 def trace(*args):
     print("".join(map(str,args)))
@@ -36,7 +36,7 @@ def receiveRigidBodyPackageFrame( frameNumber, rigidBodyList ):
     # trace( "Received frame for rigid body ", frameNumber)
 
     for rigidBody in rigidBodyList:
-        if(rigidBody['name'] == 'cs_rasc_tcp'):
+        if(rigidBody['name'] == 'ur_facebow_fixed_big_ball'):
             recv4 = True
             trans_matrix = math3d.Transform()
             quaternion = math3d.UnitQuaternion(rigidBody['rot'][3], rigidBody['rot'][0], rigidBody['rot'][1], rigidBody['rot'][2])
@@ -46,7 +46,7 @@ def receiveRigidBodyPackageFrame( frameNumber, rigidBodyList ):
 
             # trace("tcp_to_global_T", trans_matrix.matrix)
             # trace("global_to_tcp_T", global_to_tcp_T.matrix)
-        elif(rigidBody['name'] == 'cal_design_facebow_small'):
+        elif(rigidBody['name'] == 'facebow_small_new_with_big_ball'):
             if(recv4 == True):
                 trans_matrix = math3d.Transform()
                 quaternion = math3d.UnitQuaternion(rigidBody['rot'][3], rigidBody['rot'][0], rigidBody['rot'][1], rigidBody['rot'][2])

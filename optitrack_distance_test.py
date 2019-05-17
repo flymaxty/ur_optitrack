@@ -57,38 +57,40 @@ if __name__ == '__main__':
         # print(t1.inverse * t2)
         # print(t1.dist(t2), t1.get_orient().ang_dist(t2.get_orient()))
     print('Done', end='\n')
+
+    print("main distance: ", np.array(euclidean_distance).mean())
     
     print('Ploting figure...', end='')
     fig = plt.figure()
 
     euclidean_distance_error = np.array(euclidean_distance) - 100.0
 
-    euclidean_error_boxplot = fig.add_subplot(2, 2, 1)
+    euclidean_error_boxplot = fig.add_subplot(2, 3, 2)
     euclidean_error_boxplot.set_title('Euclidean error(mm)')
     euclidean_error_boxplot.boxplot(euclidean_distance_error)
 
-    euclidean_error_hist = fig.add_subplot(2, 2, 2)
+    euclidean_error_hist = fig.add_subplot(2, 3, 3)
     euclidean_error_hist.set_title('Euclidean error(mm)')
     euclidean_error_hist.hist(x=euclidean_distance_error, bins=50)
 
-    euclidean_distance_boxplot = fig.add_subplot(2, 2, 3)
+    euclidean_distance_boxplot = fig.add_subplot(2, 3, 5)
     euclidean_distance_boxplot.set_title('Euclidean Distance(mm)')
     euclidean_distance_boxplot.boxplot(euclidean_distance)
 
-    euclidean_distance_hist = fig.add_subplot(2, 2, 4)
+    euclidean_distance_hist = fig.add_subplot(2, 3, 6)
     euclidean_distance_hist.set_title('Euclidean Distance(mm)')
     euclidean_distance_hist.hist(x=euclidean_distance, bins=50)
 
-    # point_sub = fig.add_subplot(1, 3, 1, projection='3d')
-    # d = point_sub.scatter(xx, yy, zz, c=euclidean_distance_error, marker='.')
-    # point_sub.set_title('Point Cloud')
-    # point_sub.set_xlabel('X')
-    # point_sub.set_ylabel('Y')
-    # point_sub.set_zlabel('Z')
-    # # point_sub.set_xlim([-600, 600])
-    # # point_sub.set_ylim([-100, 100])
-    # # point_sub.set_zlim([-600, 600])
-    # plt.colorbar(d, ax = point_sub)
+    point_sub = fig.add_subplot(2, 3, 1, projection='3d')
+    d = point_sub.scatter(xx, yy, zz, c=euclidean_distance_error, marker='.')
+    point_sub.set_title('Point Cloud')
+    point_sub.set_xlabel('X')
+    point_sub.set_ylabel('Y')
+    point_sub.set_zlabel('Z')
+    # point_sub.set_xlim([-600, 600])
+    # point_sub.set_ylim([-100, 100])
+    # point_sub.set_zlim([-600, 600])
+    plt.colorbar(d, ax = point_sub)
 
     print('Done', end='\n')
     plt.show()

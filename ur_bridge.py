@@ -14,7 +14,7 @@ import numpy as np
 from urx import Robot
 import paho.mqtt.client as mqtt
 
-arm = Robot("192.168.0.153")
+arm = Robot("192.168.1.22")
 
 def trace(*args):
     print("".join(map(str,args)))
