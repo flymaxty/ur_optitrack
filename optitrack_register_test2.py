@@ -80,7 +80,9 @@ if __name__ == '__main__':
     print('Done', end='\n')
 
     print("Euclidean mean error: ", np.array(euclidean_error).mean())
+    print("Euclidean std: ", np.std(np.array(euclidean_error), ddof=1))
     print("Angle mean error:", np.array(angle_error).mean())
+    print("Angle std:", np.std(angle_error, ddof=1))
     
     print('Ploting figure...', end='')
     fig = plt.figure()

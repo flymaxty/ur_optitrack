@@ -19,9 +19,9 @@ global_to_tcp_T = math3d.Transform()
 target_to_tcp_T = math3d.Transform()
 target_to_object_T = math3d.Transform()
 
-target_to_object_T.pos.z = -0.06
-# tcp_target_orient = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-# target_to_object_T.set_orient(math3d.Orientation(tcp_target_orient))
+target_to_object_T.pos.y = 0.06
+tcp_target_orient = np.array([[0, -1, 0], [0, 0, -1], [1, 0, 0]])
+target_to_object_T.set_orient(math3d.Orientation(tcp_target_orient))
 
 def trace(*args):
     print("".join(map(str,args)))
@@ -46,7 +46,7 @@ def receiveRigidBodyPackageFrame( frameNumber, rigidBodyList ):
 
             # trace("tcp_to_global_T", trans_matrix.matrix)
             # trace("global_to_tcp_T", global_to_tcp_T.matrix)
-        elif(rigidBody['name'] == 'facebow_small_new_with_big_ball'):
+        elif(rigidBody['name'] == 'cal_design_facebow_small'):
             if(recv4 == True):
                 trans_matrix = math3d.Transform()
                 quaternion = math3d.UnitQuaternion(rigidBody['rot'][3], rigidBody['rot'][0], rigidBody['rot'][1], rigidBody['rot'][2])
@@ -93,5 +93,5 @@ if __name__ == '__main__':
         # target_to_tcp_T.pos.x = 0
         # target_to_tcp_T.pos.y = 0
         # target_to_tcp_T.pos.z = 0
-        arm.movex_tool("movep", target_to_tcp_T, acc=0.4, vel=0.4, wait=False, threshold=0.3)
+        arm.movex_tool("movep", target_to_tcp_T, acc=0.2, vel=0.2, wait=False, threshold=0.3)
         # time.sleep(0.1)
